@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Students</title>
+    </head>
+    <body>
+        <ul>
+            {% for student in students %}
+            {% if student.active %}
+            <li>{{student.name}} ({{student.age}})</li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </body>
+</html>
