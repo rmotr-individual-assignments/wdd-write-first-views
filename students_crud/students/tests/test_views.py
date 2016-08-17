@@ -43,9 +43,10 @@ class StudentListTestCase(BaseTestCase):
         self.assertEqual(
             response._headers['content-type'],
             ('Content-Type', 'text/html; charset=utf-8'))
-        self.assertIn('<li>Daenerys Targaryen (30)</li>', response.content)
-        self.assertIn('<li>John Snow (36)</li>', response.content)
-        self.assertNotIn('<li>Arya Stark (20)</li>', response.content)  # not showing inactive students
+        content = response.content.decode('utf-8')
+        self.assertIn('<li>Daenerys Targaryen (30)</li>', content)
+        self.assertIn('<li>John Snow (36)</li>', content)
+        self.assertNotIn('<li>Arya Stark (20)</li>', content)  # not showing inactive students
 
     def test_students_list_json_response(self):
         response = self.client.get('/students', {'format': 'json'})
@@ -108,7 +109,8 @@ class StudentListTestCase(BaseTestCase):
         }
         response = self.client.post('/students', data=payload)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, 'POSTed student data is incomplete or invalid')
+        self.assertEqual(response.content.decode('utf-8'),
+                         'POSTed student data is incomplete or invalid')
 
     def test_students_create_invalid_fields_types(self):
         payload = {
@@ -175,7 +177,8 @@ class StudentSearchTestCase(BaseTestCase):
     def test_student_search_missing_query_param(self):
         response = self.client.get('/students/search')
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, '"query" param must be provided')
+        self.assertEqual(response.content.decode('utf-8'),
+                         '"query" param must be provided')
 
     def test_student_search(self):
         response = self.client.get('/students/search', {'query': 'snow'})
