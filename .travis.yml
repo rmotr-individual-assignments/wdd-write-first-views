@@ -1,0 +1,23 @@
+language: python
+sudo: false
+os:
+  - linux
+
+python:
+  - "2.7"
+  - "3.4"
+  - "3.5"
+
+install:
+  - pip install -r requirements/base.txt
+
+script:
+  - "PYTHONPATH=students_crud DJANGO_SETTINGS_MODULE=students_crud.settings.base django-admin test students_crud"
+
+notifications:
+  webhooks:
+    urls:
+      - http://staging-learn.rmotr.com/webhooks/travis/build-finished
+    on_success: always
+    on_failure: always
+    on_start: never
